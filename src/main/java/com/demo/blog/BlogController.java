@@ -64,11 +64,11 @@ public class BlogController extends Controller {
 	public void update() {
 		Term term = getBean(Term.class);
 		term.update();
-		int flag = 0;//1: 新的有，库里没有； 2 都有 ；3，新的没有，库里有
+		int flag = 1;//1: 新的有，库里没有； 2 都有 ；3，新的没有，库里有
 		String[] tags = getParaValues("tags") ;
 		List<TermTagRel> list = service.getRelTags(term.getShortName());
 		for (int i = 0; i < tags.length; i++) {
-			flag = 0;
+			flag = 1;
 			for (int j = 0; j < list.size(); j++) {
 				//两个数组都有的值
 				if (tags[i].equals(list.get(j).getTagName())) {
@@ -87,9 +87,6 @@ public class BlogController extends Controller {
 				ttr.setShortName(term.getShortName());
 				ttr.setTagName(tags[i]);
 				ttr.save();
-			}else {
-				//两边都有
-				break;
 			}
 		}
 		//剩下的list是情况3的数据
