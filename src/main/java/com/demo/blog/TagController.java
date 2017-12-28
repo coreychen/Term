@@ -34,7 +34,7 @@ public class TagController extends Controller {
 	}
 	
 	public void edit() {
-		setAttr("blog", service.findById(getParaToInt()));
+		setAttr("blog", service.findById(getPara()));
 	}
 	
 	/**
@@ -48,7 +48,7 @@ public class TagController extends Controller {
 	}
 	
 	public void delete() {
-		service.deleteById(getParaToInt());
+		service.deleteById(getPara());
 		redirect("/blog");
 	}
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import com.demo.common.model.Tag;
 import com.demo.common.model.Term;
 import com.demo.common.model.TermTagRel;
-import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -27,8 +26,25 @@ public class BlogService {
 	private static final TermTagRel ttrDao = new TermTagRel().dao();
 	
 	
-	public Page<Term> paginate(int pageNumber, int pageSize) {
-		return dao.paginate(pageNumber, pageSize, "select t.short_name,t.full_name,t.descb ,group_concat(tag_name) as tags ", "from term t join term_tag_rel tag on t.short_name = tag.short_name group by t.short_name,t.full_name,t.descb");
+	public Page<Term> paginate(int pageNumber, int pageSize,String termName,String[] tags ) {
+		StringBuilder sql = new StringBuilder("from term t join term_tag_rel tag on t.short_name = tag.short_name  where 1=1");
+		if (termName !=null && termName.trim().length()>0) {
+			sql.append(" and ( t.short_name like '%"+termName+"%' or t.full_name like '%"+termName+"%' or t.descb like '%"+termName+"%' ) ");
+		}
+		if(tags!=null && tags.length>0){
+			
+			String tagstr = "";
+			for (int i = 0; i < tags.length; i++) {
+				if(i==0)
+					tagstr = "'"+ tags[i] +"'";
+				else
+					tagstr += ",'"+ tags[i] +"'";
+			}
+			sql.append(" and tag.tag_name in ("+ tagstr +") ");
+//			list.add(tagstr);
+		}
+		sql.append(" group by t.short_name,t.full_name,t.descb ");
+		return dao.paginate(pageNumber, pageSize, "select t.short_name,t.full_name,t.descb ,group_concat(tag_name) as tags ", sql.toString());
 	}
 	
 	public Term findById(String id) {

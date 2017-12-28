@@ -39,7 +39,7 @@
 				<option value="#(x.tagName)"  data-subtitle="#(x.descb)" #if(term !=null && term.tags.indexOf(x.tagName)>=0) selected #end >#(x.tagName)</option>
 			#end
 		</select>
-		<input value="+ 标签" id="addTag" type="button" style="">
+		<input value="+ 标签" id="addTag" type="button" style="float: inherit;">
 		#(tagMsg)
 	</div>
 	<div>
@@ -67,7 +67,7 @@
 		</div>
 		<div style="overflow:hidden ;">
 			<label style="vertical-align: top">标签描述：</label>
-			<textarea name="tag.descb" value=""  style="height: 50px"></textarea>
+			<textarea name="tag.descb" style="overflow-x:hidden"  rows="5"></textarea>
 		</div>
     </form></div>
     <div class="pop-foot">

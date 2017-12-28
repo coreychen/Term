@@ -3,6 +3,31 @@
 <h1>术语管理&nbsp;&nbsp;
 <a href="#(root)/blog/add">创建名词</a>
 </h1>
+<link rel="stylesheet" href="#(root)/css/fm.selectator.jquery.css"/>
+<script src="#(root)/js/fm.selectator.jquery.js" type="text/javascript" ></script>
+<div class="search_box"><form action = "#(root)/blog" >
+	<lable>名称</lable> <input type ="text" name="termName" value="#(termName)"/>
+	<lable>标签</lable>
+	<select id="tags" name="tags" multiple style="width: 350px;height: 36px;">
+		#for(x : tagList)
+			<option value="#(x.tagName)"  data-subtitle="#(x.descb)" #if(tags !=null && tags.indexOf(x.tagName)>=0) selected #end >#(x.tagName)</option>
+		#end
+	</select>
+	<input type="submit" value="查询" id="search" />
+</form></div>
+	<script>
+	$(function () {
+		var $tags = $('#tags');
+		if ($tags.data('selectator') === undefined) {
+			$tags.selectator({
+				showAllOptionsOnFocus: true
+			});
+		} else {
+			$tags.selectator('destroy');
+		}
+	});
+	</script>
+
 <div class="table_box">
 	<table class="list">
 		<tbody>
@@ -28,6 +53,6 @@
 			#end
 		</tbody>
 	</table>
-	#@paginate(blogPage.pageNumber, blogPage.totalPage, "./blog/")
+	#@paginate(blogPage.pageNumber, blogPage.totalPage, root+"/blog/")
 </div>
 #end

@@ -1,5 +1,6 @@
 package com.demo.blog;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.demo.common.model.Tag;
@@ -21,7 +22,13 @@ public class BlogController extends Controller {
 	static BlogService service = new BlogService();
 	
 	public void index() {
-		setAttr("blogPage", service.paginate(getParaToInt(0, 1), 10));
+		String termName = getPara("termName");
+		String[] tags = getParaValues("tags");
+		setAttr("blogPage", service.paginate(getParaToInt(0, 1), 20,termName,tags));
+		setAttr("tagList", service.getTags());
+		setAttr("termName", termName);
+		setAttr("tags", Arrays.toString(tags));
+		setAttr("append", "?"+getRequest().getQueryString());
 		render("blog.html");
 	}
 	
